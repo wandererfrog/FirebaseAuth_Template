@@ -1,24 +1,52 @@
-import logo from './logo.svg';
 import './App.css';
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
+
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Reset from "./pages/Reset";
+import Dashboard from "./pages/Dashboard";
+import Home from "./pages/Home";
+
+import UserContext from './context/userContext';
+import useAuthListener from './hooks/authListener';
+
+
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <Home />,
+  },
+  {
+    path: "/login",
+    element: <Login />,
+  },
+  {
+    path: "/dashboard",
+    element: <Dashboard />,
+  },
+  {
+    path: "/register",
+    element: <Register />,
+  },
+  {
+    path: "/Reset",
+    element: <Reset />,
+  },
+]);
+
 
 function App() {
+  const { user } = useAuthListener();
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <UserContext.Provider value={{ user }}>
+      <div className="App">
+        <RouterProvider router={router} />
+      </div>
+    </UserContext.Provider>
   );
 }
 
